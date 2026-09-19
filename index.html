@@ -190,23 +190,50 @@
         }
         
         .smug-section {
-            padding: 3rem;
-            background: rgba(255, 215, 0, 0.05); /* A very faint, classy gold tint */
-            border: 2px solid var(--gold);
-            border-radius: 20px;
-            margin: 3rem 0;
+            padding: 4rem 2rem;
+            background: rgba(255, 215, 0, 0.03);
+            border: 3px double var(--gold);
+            border-radius: 30px;
+            margin: 4rem 0;
         }
 
         .smug-text {
-            font-family: 'Georgia', serif; /* A classic, fancy serif font */
+            font-family: 'Georgia', serif;
             font-style: italic;
-            font-size: 2.4rem;
+            font-size: 2.8rem;
             color: var(--gold);
-            line-height: 1.4;
+            line-height: 1.3;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-            margin: 0 auto;
-            max-width: 800px;
+            margin: 0 auto 2rem auto;
+            max-width: 900px;
+            padding: 0 20px;
         }
+
+        .smug-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .smug-btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: transparent;
+            border: 2px solid var(--hate-red); /* The Red Variant */
+            color: var(--hate-red);
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .smug-btn:hover {
+            background: var(--hate-red);
+            color: white;
+            transform: scale(1.1);
+        }
+
 
         /* Fireworks Canvas */
         #fireworks {
@@ -288,9 +315,17 @@
                 <img src="images/my-photo.png" alt="JOSHUA GIDDLER SUCKS" style="max-width: 500px; border: 5px solid white; border-radius: 15px;">
             </div>
         </section>
-        
-        <section id="smug-quote" class="smug-section">
-            <p class="smug-text">"On March 22nd, 2025, Josh Giddey broke both my spirit and my body with his eight steal game, ending THANKS 4 THI!!'s incredible in-season comeback. I now can no longer feel pain." — Tony Zu</p>
+
+        <section id="worst-defeat">
+            <div class="smug-section">
+                <p class="smug-text">
+                    "On March 22nd, 2025, Josh Giddey broke both my spirit and my body with his eight steal game, ending THANKS 4 THI!!'s incredible in-season comeback. I lost steals by 1. I no longer can feel pain." — Tony Zu
+                </p>
+                <div class="smug-buttons">
+                    <a href="https://www.nba.com/bulls/news/bulls-dominate-lakers-behind-josh-giddeys-historic-stat-line-146-115" class="smug-btn">Yes, It's True</a>
+                    <a href="https://basketball.fantasysports.yahoo.com/2024/nba/96553/matchup?week=20&module=matchup&mid1=5" class="smug-btn">Relive The Agony</a>
+                </div>
+            </div>
         </section>
 
         <section id="profile">

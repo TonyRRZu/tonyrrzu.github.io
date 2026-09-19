@@ -20,6 +20,7 @@
             padding: 0;
             background-color: var(--court-navy);
             color: var(--white);
+            overflow-x: hidden;
         }
 
         header {
@@ -36,6 +37,14 @@
             text-transform: uppercase;
             color: var(--gold);
             text-shadow: 3px 3px 0px var(--hoop-orange);
+        }
+
+        .subtitle {
+            font-size: 2.5rem;
+            margin: 0.5rem 0 0 0;
+            color: var(--white);
+            text-transform: uppercase;
+            text-shadow: 2px 2px 0px var(--hoop-orange);
         }
 
         .container {
@@ -93,9 +102,32 @@
 
         .record-list li {
             margin: 20px 0;
-            padding: 15px;
+            padding: 20px;
             background: rgba(255,255,255,0.05);
             border-left: 10px solid var(--gold);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .record-link {
+            display: inline-block;
+            margin-left: 20px;
+            padding: 10px 20px;
+            background: transparent;
+            border: 2px solid var(--gold);
+            color: var(--gold);
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .record-link:hover {
+            background: var(--gold);
+            color: var(--court-navy);
+            transform: scale(1.1);
         }
 
         /* The Hate Section */
@@ -156,13 +188,25 @@
             background: #000;
             border-top: 5px solid var(--hoop-orange);
         }
+
+        /* Fireworks Canvas */
+        #fireworks {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+        }
     </style>
 </head>
-<body>
+<body style="overflow-x: hidden;">
+    <canvas id="fireworks"></canvas>
 
     <header>
         <h1>The Dynasty of Tony Zu</h1>
-        <p>Behold, Fantasy Basketball Excellence</p>
+        <p class="subtitle">Behold, Fantasy Basketball Excellence</p>
     </header>
 
     <div class="container">
@@ -170,7 +214,6 @@
             <h2>Hall of Fame</h2>
             <div class="trophy-grid">
                 <div class="trophy-card">
-                    <!-- Replace these src with your actual image paths -->
                     <img src="images/trophy_2025_1st.png" alt="2025-2026 1st Place">
                     <p>2025-2026 (1st)</p>
                 </div>
@@ -190,19 +233,28 @@
         </section>
 
         <section id="records">
-            <h2>Winner's Circle: the Hall of Fame</h2>
+            <h2>Winner's Circle</h2>
             <ul class="record-list">
-                <li><strong>2024:</strong> Tony's Definitive Team</li>
-                <li><strong>2025:</strong> I HATE NICOLAS TAMBURRI STUART</li>
-                <li><strong>2026:</strong> https://tinyurl.com/bdfjbb7u</li>
+                <li>
+                    <strong>2024:</strong> Tony's Definitive Team
+                    <a href="https://basketball.fantasysports.yahoo.com/2024/nba/97904/matchup?mid1=3&mid2=2&week=22" class="record-link">View Matchup</a>
+                </li>
+                <li>
+                    <strong>2025:</strong> I HATE NICOLAS TAMBURRI STUART
+                    <a href="https://basketball.fantasysports.yahoo.com/2025/nba/98614/matchup?week=23&mid1=4&mid2=1" class="record-link">View Matchup</a>
+                </li>
+                <li>
+                    <strong>2026:</strong> https://tinyurl.com/bdfjbb7u
+                    <a href="https://basketball.fantasysports.yahoo.com/2025/nba/98614/matchup?week=23&mid1=4&mid2=1" class="record-link">View Matchup</a>
+                </li>
             </ul>
         </section>
 
         <section id="hate">
             <div class="hate-section">
-                <h2>THE TARGET</h2>
+                <h2 style="color: white; border-color: white;">THE TARGET</h2>
                 <p class="hate-text">WE HATE JOSH GIDDEY</p>
-                <img src="images/my-photo.png" alt="JOSHUA GIDDLER SUCKS">
+                <img src="images/my-photo.png" alt="JOSHUA GIDDLER SUCKS" style="max-width: 500px; border: 5px solid white; border-radius: 15px;">
             </div>
         </section>
 
@@ -217,6 +269,99 @@
         <p>&copy; 2026. The Dynasty Continues...</p>
     </footer>
 
+    <script>
+        const canvas = document.getElementById('fireworks');
+        const ctx = canvas.getContext('2d');
+        
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        class Firework {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = canvas.height;
+                this.destY = Math.random() * (canvas.height / 2);
+                this.color = `hsl(${Math.random() * 360}, 100%, 50%)`;
+                this.speed = Math.random() * 3 + 3;
+                this.particles = [];
+                this.exploded = false;
+            }
+
+            update() {
+                if (!this.exploded) {
+                    this.y -= this.speed;
+                    if (this.y <= this.destY) {
+                        this.exploded = true;
+                        this.explode();
+                    }
+                }
+
+                this.particles.forEach((p, i) => {
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.alpha -= 0.015;
+                    if (p.alpha <= 0) this.particles.splice(i, 1);
+                });
+            }
+
+            explode() {
+                for (let i = 0; i < 50; i++) {
+                    this.particles.push({
+                        x: this.x,
+                        y: this.y,
+                        vx: (Math.random() - 0.5) * 6,
+                        vy: (Math.random() - 0.5) * 6,
+                        alpha: 1,
+                        color: this.color
+                    });
+                }
+            }
+
+            draw() {
+                if (!this.exploded) {
+                    ctx.fillStyle = this.color;
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, 3, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+                this.particles.forEach(p => {
+                    ctx.fillStyle = p.color;
+                    ctx.globalAlpha = p.alpha;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, 2, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+                ctx.globalAlpha = 1;
+            }
+        }
+
+        let fireworks = [];
+
+        function animate() {
+            ctx.fillStyle = 'rgba(10, 25, 47, 0.2)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            fireworks.forEach((f, i) => {
+                f.update();
+                f.draw();
+                if (f.exploded && f.particles.length === 0) {
+                    fireworks.splice(i, 1);
+                }
+            });
+
+            requestAnimationFrame(animate);
+        }
+
+        setInterval(() => {
+            fireworks.push(new Firework());
+        }, 2000);
+
+        animate();
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+    </script>
 </body>
 </html>
-
